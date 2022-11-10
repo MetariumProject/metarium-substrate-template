@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  metariumsubstratetemplate:
+    image: metariumsubstratetemplate
+    build:
+      context: .
+      dockerfile: ./Dockerfile
