@@ -1,36 +1,37 @@
-# Note: This is currently designed to simplify development
-# To get a smaller docker image, there should be 2 images generated, in 2 stages.
+# This is an example build stage for the node template. Here we create the binary in a temporary image.
 
-FROM rustlang/rust:nightly
+# This is a base image to build substrate nodes
+FROM docker.io/paritytech/ci-linux:production as builder
 
-LABEL Name=metariumsubstratetemplate Version=0.0.1
+WORKDIR /node-template
+COPY . .
+RUN cargo build --locked --release
 
-WORKDIR /metarium
+# This is the 2nd stage: a very small image where we copy the binary."
+FROM docker.io/library/ubuntu:20.04
+LABEL description="Multistage Docker image for Substrate Node Template" \
+  image.type="builder" \
+  image.authors="MetariumProject" \
+  image.vendor="Metarium Substrate Template" \
+  image.description="Multistage Docker image for Metarium Substrate Node Template" \
+  image.source="https://github.com/MetariumProject/metarium-substrate-template" \
+  image.documentation="https://github.com/MetariumProject/metarium-substrate-template"
 
-# Upcd dates core parts
-RUN apt-get update -y && \
-	apt-get install -y cmake pkg-config libssl-dev openssh-client git gcc build-essential clang libclang-dev protobuf-compiler
+# Copy the node binary.
+COPY --from=builder /node-template/target/release/node-template /usr/local/bin
 
-# Install rust wasm. Needed for substrate wasm engine
-RUN rustup target add wasm32-unknown-unknown
+RUN useradd -m -u 1000 -U -s /bin/sh -d /node-dev node-dev && \
+  mkdir -p /chain-data /node-dev/.local/share && \
+  chown -R node-dev:node-dev /chain-data && \
+  ln -s /chain-data /node-dev/.local/share/node-template && \
+  # unclutter and minimize the attack surface
+  rm -rf /usr/bin /usr/sbin && \
+  # check if executable works in this container
+  /usr/local/bin/node-template --version
 
-# # Download Metarium subtrate template repo
-RUN mkdir -p -m 0700 ~/.ssh && ssh-keyscan github.com >> ~/.ssh/known_hosts
-RUN --mount=type=ssh git clone "git@github.com:MetariumProject/metarium-substrate-template.git" /metarium
-RUN cd /metarium
+USER node-dev
 
-# Download rust dependencies and build the rust binary
-RUN cargo build --release
+EXPOSE 30333 9933 9944 9615
+VOLUME ["/chain-data"]
 
-# 30333 for p2p traffic
-# 9933 for RPC call
-# 9945 for Websocket
-# 9615 for Prometheus (metrics)
-EXPOSE 30333 9933 9945 9615
-
-# The execution will re-compile the project to run it
-# This allows to modify the code and not have to re-compile the
-# dependencies.
-RUN cargo check -p node-template-runtime --release
-
-ENTRYPOINT [ "./target/release/node-template"]
+ENTRYPOINT ["/usr/local/bin/node-template"]
