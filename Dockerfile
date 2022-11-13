@@ -15,8 +15,9 @@ RUN apt-get update -y && \
 RUN rustup target add wasm32-unknown-unknown
 
 # # Download Metarium subtrate template repo
-RUN mkdir -p -m 0700 ~/.ssh && ssh-keyscan github.com >> ~/.ssh/known_hosts
-RUN --mount=type=ssh git clone "git@github.com:MetariumProject/metarium-substrate-template.git" /metarium
+#RUN mkdir -p -m 0700 ~/.ssh && ssh-keyscan github.com >> ~/.ssh/known_hosts
+#RUN --mount=type=ssh git clone "git@github.com:MetariumProject/metarium-substrate-template.git" /metarium
+RUN git clone https://github.com/MetariumProject/metarium-substrate-template.git /metarium
 RUN cd /metarium
 
 # Download rust dependencies and build the rust binary
