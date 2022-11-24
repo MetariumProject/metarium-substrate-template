@@ -16,6 +16,6 @@
 .direnv
 
 # chain spec
-metariumSpec.json
-customSpec.json
+metarium*Spec.json
+custom*Spec.json
 # metariumSpecRaw.json
