@@ -111,7 +111,7 @@ pub mod pallet {
 	impl<T: Config> Pallet<T> {
 		/// An example dispatchable that takes a singles value as a parameter, writes the value to
 		/// storage and emits an event. This function must be dispatched by a signed extrinsic.
-		#[pallet::weight((10_000 + T::DbWeight::get().writes(1).ref_time(), Pays::No))]
+		#[pallet::weight(10_000 + T::DbWeight::get().writes(1).ref_time())]
 		pub fn self_register_content(origin: OriginFor<T>, kuri: Vec<u8>) -> DispatchResult {
 			// Check that the extrinsic was signed and get the signer.
 			let signer = ensure_signed(origin)?;
@@ -146,7 +146,7 @@ pub mod pallet {
 			Ok(())
 		}
 
-		#[pallet::weight((10_000 + T::DbWeight::get().writes(1).ref_time(), Pays::No))]
+		#[pallet::weight(10_000 + T::DbWeight::get().writes(1).ref_time())]
 		pub fn accept_src_transfer(origin: OriginFor<T>, kuri: Vec<u8>) -> DispatchResult {
 			let signer = ensure_signed(origin)?;
 			let bounded_kuri: BoundedVec<u8, T::MaxKURIlength> =
@@ -163,7 +163,7 @@ pub mod pallet {
 			})
 		}
 
-		#[pallet::weight((10_000 + T::DbWeight::get().writes(1).ref_time(), Pays::No))]
+		#[pallet::weight(10_000 + T::DbWeight::get().writes(1).ref_time())]
 		pub fn transfer_src(origin: OriginFor<T>, to: T::AccountId, kuri: Vec<u8>) -> DispatchResult {
 			let signer = ensure_signed(origin)?;
 			let bounded_kuri: BoundedVec<u8, T::MaxKURIlength> =
@@ -180,7 +180,7 @@ pub mod pallet {
 			})
 		}
 
-		#[pallet::weight((10_000 + T::DbWeight::get().writes(1).ref_time(), Pays::No))]
+		#[pallet::weight(10_000 + T::DbWeight::get().writes(1).ref_time())]
 		pub fn delete_src(origin: OriginFor<T>, kuri: Vec<u8>) -> DispatchResult {
 			let signer = ensure_signed(origin)?;
 			let bounded_kuri: BoundedVec<u8, T::MaxKURIlength> =
@@ -196,7 +196,7 @@ pub mod pallet {
 			})
 		}
 
-		#[pallet::weight((10_000 + T::DbWeight::get().writes(1).ref_time(), Pays::No))]
+		#[pallet::weight(10_000 + T::DbWeight::get().writes(1).ref_time())]
 		pub fn force_update_scribe_authority_status(origin: OriginFor<T>, scribe: T::AccountId, status: bool) -> DispatchResult {
 			// Check that the extrinsic was signed and get the signer.
 			ensure_root(origin)?;
@@ -215,7 +215,7 @@ pub mod pallet {
 			Ok(())
 		}
 
-		#[pallet::weight((10_000 + T::DbWeight::get().writes(1).ref_time(), Pays::No))]
+		#[pallet::weight(10_000 + T::DbWeight::get().writes(1).ref_time())]
 		pub fn update_scribe_authority_status(origin: OriginFor<T>, scribe: T::AccountId, status: bool) -> DispatchResult {
 			// Check that the extrinsic was signed and get the signer.
 			let signer = ensure_signed(origin)?;
