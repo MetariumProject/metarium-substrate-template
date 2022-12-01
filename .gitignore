@@ -17,5 +17,5 @@
 
 # chain spec
 metarium*Spec.json
-custom*Spec.json
+custom*Spec*.json
 # metariumSpecRaw.json
