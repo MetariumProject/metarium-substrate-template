@@ -48,8 +48,6 @@ pub use sp_runtime::{Perbill, Permill};
 /// Import the metarium pallet.
 pub use pallet_metarium;
 
-use frame_system::EnsureRoot;
-
 /// An index to a block.
 pub type BlockNumber = u32;
 
@@ -149,12 +147,6 @@ parameter_types! {
 	pub BlockLength: frame_system::limits::BlockLength = frame_system::limits::BlockLength
 		::max_with_normal_ratio(5 * 1024 * 1024, NORMAL_DISPATCH_RATIO);
 	pub const SS58Prefix: u8 = 42;
-}
-
-
-parameter_types! {
-	pub const MaxWellKnownNodes: u32 = 8;
-	pub const MaxPeerIdLength: u32 = 128;
 }
 
 // Configure FRAME pallets to include in runtime.
@@ -288,18 +280,6 @@ impl pallet_metarium::Config for Runtime {
 	type MaxKURIlength = ConstU32<64>;
 }
 
-/// Configure the authority pallet
-impl pallet_node_authorization::Config for Runtime {
-	type RuntimeEvent = RuntimeEvent;
-	type MaxWellKnownNodes = MaxWellKnownNodes;
-	type MaxPeerIdLength = MaxPeerIdLength;
-	type AddOrigin = EnsureRoot<AccountId>;
-	type RemoveOrigin = EnsureRoot<AccountId>;
-	type SwapOrigin = EnsureRoot<AccountId>;
-	type ResetOrigin = EnsureRoot<AccountId>;
-	type WeightInfo = ();
-   }
-
 // Create the runtime by composing the FRAME pallets that were previously configured.
 construct_runtime!(
 	pub struct Runtime
@@ -316,8 +296,6 @@ construct_runtime!(
 		Balances: pallet_balances,
 		TransactionPayment: pallet_transaction_payment,
 		Sudo: pallet_sudo,
-		// Include the node-authorization pallet
-		NodeAuthorization: pallet_node_authorization::{Pallet, Call, Storage, Event<T>, Config<T>},
 		// Include the custom logic from the pallet-metarium in the runtime.
 		Metarium: pallet_metarium,
 	}

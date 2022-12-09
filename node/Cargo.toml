@@ -17,7 +17,6 @@ targets = ["x86_64-unknown-linux-gnu"]
 name = "node-template"
 
 [dependencies]
-bs58 = { version = "0.4.0" }
 clap = { version = "4.0.9", features = ["derive"] }
 
 sc-cli = { version = "0.10.0-dev", git = "https://github.com/paritytech/substrate.git", features = ["wasmtime"] , branch = "polkadot-v0.9.32" }
