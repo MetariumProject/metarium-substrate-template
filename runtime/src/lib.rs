@@ -25,6 +25,11 @@ use sp_std::prelude::*;
 use sp_version::NativeVersion;
 use sp_version::RuntimeVersion;
 
+use sp_runtime::traits::{
+	AccountIdLookup, BlakeTwo256, Block as BlockT, Verify, IdentifyAccount, NumberFor, OpaqueKeys,
+};
+use frame_system::EnsureRoot;
+
 // A few exports that help ease life for downstream crates.
 pub use frame_support::{
 	construct_runtime, parameter_types,
@@ -280,6 +285,43 @@ impl pallet_metarium::Config for Runtime {
 	type MaxKURIlength = ConstU32<64>;
 }
 
+parameter_types! {
+	pub const MinAuthorities: u32 = 2;
+}
+
+impl validator_set::Config for Runtime {
+	type RuntimeEvent = RuntimeEvent;
+	type AddRemoveOrigin = EnsureRoot<AccountId>;
+	type MinAuthorities = MinAuthorities;
+}
+
+parameter_types! {
+	pub const MinAuthorities: u32 = 2;
+}
+
+impl validator_set::Config for Runtime {
+	type RuntimeEvent = RuntimeEvent;
+	type AddRemoveOrigin = EnsureRoot<AccountId>;
+	type MinAuthorities = MinAuthorities;
+}
+
+parameter_types! {
+	pub const Period: u32 = 2 * MINUTES;
+	pub const Offset: u32 = 0;
+}
+
+impl pallet_session::Config for Runtime {
+	type RuntimeEvent = RuntimeEvent;
+	type ValidatorId = <Self as frame_system::Config>::AccountId;
+	type ValidatorIdOf = validator_set::ValidatorOf<Self>;
+	type ShouldEndSession = pallet_session::PeriodicSessions<Period, Offset>;
+	type NextSessionRotation = pallet_session::PeriodicSessions<Period, Offset>;
+	type SessionManager = ValidatorSet;
+	type SessionHandler = <opaque::SessionKeys as OpaqueKeys>::KeyTypeIdProviders;
+	type Keys = opaque::SessionKeys;
+	type WeightInfo = ();
+}
+
 // Create the runtime by composing the FRAME pallets that were previously configured.
 construct_runtime!(
 	pub struct Runtime
@@ -291,9 +333,11 @@ construct_runtime!(
 		System: frame_system,
 		RandomnessCollectiveFlip: pallet_randomness_collective_flip,
 		Timestamp: pallet_timestamp,
+		Balances: pallet_balances,
+		ValidatorSet: validator_set,
+		Session: pallet_session,
 		Aura: pallet_aura,
 		Grandpa: pallet_grandpa,
-		Balances: pallet_balances,
 		TransactionPayment: pallet_transaction_payment,
 		Sudo: pallet_sudo,
 		// Include the custom logic from the pallet-metarium in the runtime.
