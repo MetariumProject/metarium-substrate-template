@@ -229,3 +229,14 @@ by appending your own. A few useful ones are as follow.
 # Check whether the code is compilable
 ./scripts/docker_run.sh cargo check
 ```
+
+
+### Test validator-set in local
+
+./target/release/node-template --chain=local --alice --base-path ../data/alice --port=30334 --ws-port 9944 --ws-external --rpc-cors=all --rpc-methods=Unsafe --rpc-external
+
+
+./target/release/node-template --chain=local --bob --base-path ../data/bob --port=30335 --ws-port 9945 --ws-external --rpc-cors=all --rpc-methods=Unsafe --rpc-external --bootnodes /ip4/127.0.0.1/tcp/30334/p2p/<ALICE_PEER_ID>
+
+
+./target/release/node-template --chain=local --charlie --base-path ../data/charlie --port=30336 --ws-port 9946 --ws-external --rpc-cors=all --rpc-methods=Unsafe --rpc-external --bootnodes /ip4/127.0.0.1/tcp/30334/p2p/<ALICE_PEER_ID>

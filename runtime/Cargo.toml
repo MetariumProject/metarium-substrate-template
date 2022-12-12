@@ -39,6 +39,8 @@ sp-std = { version = "5.0.0", default-features = false, git = "https://github.co
 sp-transaction-pool = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", " branch" = "polkadot-v0.9.34" }
 sp-version = { version = "5.0.0", default-features = false, git = "https://github.com/paritytech/substrate.git", " branch" = "polkadot-v0.9.34" }
 
+pallet-session = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", " branch" = "polkadot-v0.9.34" }
+
 # Used for the node template's RPCs
 frame-system-rpc-runtime-api = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", " branch" = "polkadot-v0.9.34" }
 pallet-transaction-payment-rpc-runtime-api = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", " branch" = "polkadot-v0.9.34" }
@@ -48,7 +50,8 @@ frame-benchmarking = { version = "4.0.0-dev", default-features = false, git = "h
 frame-system-benchmarking = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", optional = true , " branch" = "polkadot-v0.9.34" }
 
 # Local Dependencies
-pallet-metarium = { version = "4.0.0-dev", default-features = false, path = "../pallets/metarium" }
+pallet-metarium = { version = "4.0.0-dev", default-features = false, git = "https://github.com/MetariumProject/pallet-metarium.git", " branch" = "polkadot-v0.9.34" }
+pallet-validator-set = { version = "0.9.34", default-features = false, git = "https://github.com/MetariumProject/pallet-validator-set.git", " branch" = "polkadot-v0.9.34" }
 
 [build-dependencies]
 substrate-wasm-builder = { version = "5.0.0-dev", git = "https://github.com/paritytech/substrate.git", " branch" = "polkadot-v0.9.34" }
@@ -72,6 +75,7 @@ std = [
 	"pallet-randomness-collective-flip/std",
 	"pallet-sudo/std",
 	"pallet-metarium/std",
+	"pallet-validator-set/std",
 	"pallet-timestamp/std",
 	"pallet-transaction-payment-rpc-runtime-api/std",
 	"pallet-transaction-payment/std",
@@ -86,6 +90,7 @@ std = [
 	"sp-std/std",
 	"sp-transaction-pool/std",
 	"sp-version/std",
+	'pallet-session/std',
 ]
 runtime-benchmarks = [
 	"frame-benchmarking/runtime-benchmarks",
