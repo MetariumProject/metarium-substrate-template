@@ -3890,7 +3890,7 @@ dependencies = [
 [[package]]
 name = "pallet-metarium"
 version = "4.0.0-dev"
-source = "git+https://github.com/MetariumProject/pallet-metarium.git#7b0fd9962c6f966985780fa383ce037d64647760"
+source = "git+https://github.com/MetariumProject/pallet-metarium.git#01bc0ae7a96ec58dcf2a7e3ea2c7df15d9480304"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -4027,7 +4027,7 @@ dependencies = [
 [[package]]
 name = "pallet-validator-set"
 version = "0.9.34"
-source = "git+https://github.com/MetariumProject/pallet-validator-set.git#3662c96fdc836965a13ccc154b0d7d9b11a384fa"
+source = "git+https://github.com/MetariumProject/pallet-validator-set.git#018661b96e721c68f025a620fc78072f1f42a568"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
